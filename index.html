@@ -136,7 +136,7 @@ h3::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--
 .mc .choices{flex-direction:column}
 .mc .chip{width:100%}
 .chip.ok{border-color:var(--teal);background:var(--teal-soft);font-weight:700;color:var(--ink)}
-.chip.no{border-color:var(--red);background:var(--red-soft);text-decoration:line-through;text-decoration-thickness:1px;color:var(--ink)}
+.chip.bad{border-color:var(--red);background:var(--red-soft);text-decoration:line-through;text-decoration-thickness:1px;color:var(--ink)}
 .chip:disabled{cursor:default}
 .why{display:none;margin:8px 0 0;font-size:15.5px;padding:8px 12px;border-radius:8px;background:var(--teal-soft);border-left:4px solid var(--teal)}
 .why.open{display:block}
@@ -721,7 +721,7 @@ footer{padding:20px 0 60px;color:var(--mute);font-size:14px}
             b.classList.add("ok"); state.done[id]=1; again.classList.remove("open");
             why.textContent=q.w; why.classList.add("open");
             btns.forEach(function(x){x.disabled=true});
-          }else{ b.classList.add("no"); b.disabled=true; again.classList.add("open"); }
+          }else{ b.classList.add("bad"); b.disabled=true; again.classList.add("open"); }
           save(); updateProg(); renderSum(); markNav();
         });
         cs.appendChild(b);
