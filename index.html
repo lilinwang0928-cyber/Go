@@ -194,6 +194,36 @@ label.l{display:block;font-weight:700;margin:18px 0 4px}
 .stamp.on{display:inline-block}
 footer{padding:20px 0 60px;color:var(--mute);font-size:14px}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.prog i{transition:none}}
+
+/* ===== v4 優化：層次、點擊面積、對比 ===== */
+.st{border-top:5px solid var(--teal);padding:22px 16px 24px;box-shadow:0 1px 0 var(--line),0 10px 24px -16px rgba(0,0,0,.25)}
+@media (min-width:640px){.st{padding:28px 28px 30px}}
+.sh{padding-bottom:12px;border-bottom:1px dashed var(--line);margin-bottom:16px}
+h3{margin:26px 0 8px;font-size:17.5px;letter-spacing:.02em}
+.q{border-left:5px solid var(--red);background:var(--bg);padding:14px 14px 14px 16px;border-radius:4px 12px 12px 4px}
+.q.done{border-left-color:var(--teal)}
+.qt{font-size:16.5px;line-height:1.7;margin-bottom:10px}
+.chip{min-height:44px;padding:8px 14px;border-radius:10px;transition:background .15s,border-color .15s,transform .1s}
+.chip:active:not(:disabled){transform:scale(.98)}
+.choices .chip{flex:1 1 auto}
+.mc .chip{flex:none}
+.chip.ok::before{content:"✓ ";color:var(--teal-ink);font-weight:900}
+.chip.bad::before{content:"✗ ";color:var(--red);font-weight:900;text-decoration:none;display:inline-block}
+.chip:focus-visible,.nb:focus-visible,.hint-btn:focus-visible,.var:focus-visible,.zoom:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.why{line-height:1.7}
+.key{position:relative;padding:12px 16px 14px 46px}
+.key::before{content:"★";position:absolute;left:14px;top:11px;color:var(--gold);font-size:20px;line-height:1}
+.key p{line-height:1.75}
+.sv{padding:12px 14px}
+.sv .val{background:var(--line);color:var(--ink);border-radius:999px;padding:1px 10px;font-weight:700}
+.sv input[type=range]{height:28px}
+.zoom{box-shadow:0 4px 14px -8px rgba(0,0,0,.5)}
+.deck figcaption{text-align:center}
+.take{border:2px solid var(--gold);border-radius:14px;background:var(--gold-soft);padding:6px 16px 10px;margin:0 0 18px}
+.take ol{margin:6px 0 0;padding:0;list-style:none;counter-reset:t}
+.take li{counter-increment:t;display:flex;gap:10px;margin:10px 0;line-height:1.7}
+.take li::before{content:counter(t);flex:none;width:26px;height:26px;margin-top:2px;border-radius:50%;background:var(--red);color:#fff;font-weight:900;display:grid;place-items:center;font-size:14px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
 <body>
@@ -373,6 +403,11 @@ footer{padding:20px 0 60px;color:var(--mute);font-size:14px}
 <section class="st" id="s12">
   <div class="sh"><span class="no">★</span><div><div class="kicker">成績單</div><h2>我的棋局回顧</h2></div></div>
   <p class="sub">只計第一次作答的結果。答錯可以重選，直到看懂為止。</p>
+  <div class="take"><h3 style="margin-top:12px">三句話帶走</h3><ol>
+    <li><span><b>事與情都要懂。</b>窮盡物性，更要洞悉人性；只會「怎麼做」不等於「做得成」。</span></li>
+    <li><span><b>懶人包不是能力。</b>口訣能傳達資訊，卻長不出穩定的判斷與自我修正。</span></li>
+    <li><span><b>破局靠鷹架與可驗證的成果。</b>先搭輔助輪，再一步步動搖舊的認知巨龍。</span></li>
+  </ol></div>
   <div class="score"><div class="big" id="total">0 / 0</div><span class="stamp" id="stamp">全數做成</span></div>
   <div class="sum" id="sum"></div>
   <p id="final"></p>
@@ -727,7 +762,7 @@ footer{padding:20px 0 60px;color:var(--mute);font-size:14px}
           if(state.done[id]) return;
           if(state.first[id]==null) state.first[id]=(ci===q.a)?1:0;
           if(ci===q.a){
-            b.classList.add("ok"); state.done[id]=1; again.classList.remove("open");
+            b.classList.add("ok"); d.classList.add("done"); state.done[id]=1; again.classList.remove("open");
             why.textContent=q.w; why.classList.add("open");
             btns.forEach(function(x){x.disabled=true});
           }else{ b.classList.add("bad"); b.disabled=true; again.classList.add("open"); }
@@ -737,7 +772,7 @@ footer{padding:20px 0 60px;color:var(--mute);font-size:14px}
       });
       d.appendChild(p); d.appendChild(cs); d.appendChild(again); d.appendChild(why); box.appendChild(d);
       if(state.done[id]){
-        btns[q.a].classList.add("ok"); btns.forEach(function(x){x.disabled=true});
+        btns[q.a].classList.add("ok"); d.classList.add("done"); btns.forEach(function(x){x.disabled=true});
         why.textContent=q.w; why.classList.add("open");
       }
     });
